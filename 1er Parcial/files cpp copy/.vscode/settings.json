@@ -1,0 +1,16 @@
+{
+    "files.associations": {
+        "*.py": "python",
+        "istream": "cpp",
+        "iostream": "cpp",
+        "ios": "cpp",
+        "__string": "cpp",
+        "fstream": "cpp",
+        "iterator": "cpp",
+        "locale": "cpp",
+        "streambuf": "cpp",
+        "string": "cpp",
+        "sstream": "cpp",
+        "set": "cpp"
+    }
+}
