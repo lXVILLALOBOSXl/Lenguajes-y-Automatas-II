@@ -4,13 +4,11 @@
 int main(int argc, const char * argv[]) {
 
 
-    // string file_name;
-    // cin >> file_name;
+    string file_name;
+    cin >> file_name;
     
-    // scanner s(file_name);
+    scanner s(file_name);
 
-    scanner s("/Users/luisvillalobos/Documents/Programacion/TECMM/Lenguajes y automatas II/1er Parcial/Analizador Lexico/prueba.txt");
-    
     scanner::token t;
 
     do
