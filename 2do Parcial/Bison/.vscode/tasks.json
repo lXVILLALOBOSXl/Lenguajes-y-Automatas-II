@@ -1,0 +1,39 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "C/C++: clang++ compilar archivo activo",
+            "command": "/usr/bin/clang++",
+            "args": [
+                "-fcolor-diagnostics",
+                "-fansi-escape-codes",
+                "-g",
+                "*.cpp",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Tarea generada por el depurador."
+        },
+        {
+            "label": "Compilar archivo activo",
+            "command": "/usr/bin/clang++",
+            "dependsOn": "C/C++: clang++ compilar archivo activo",
+            "problemMatcher":[],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }   
+        }
+    ]
+}

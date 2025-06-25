@@ -31,21 +31,54 @@ int main(int argc, const char * argv[]) {
             case scanner::identif:
                 cout << "Identificator: " << s.get_lexeme() << endl;
                 break;
-            case scanner::reserved:
-                cout << "Reserved: " << s.get_lexeme() << endl;
+            case scanner::_true:
+                cout << "true: " << s.get_lexeme() << endl;
                 break;
-            case scanner::delimiter:
-                cout << "Delimiter" << endl;
+            case scanner::_false:
+                cout << "false: " << s.get_lexeme() << endl;
                 break;
-            case scanner::punctuation:
-                cout << "Punctuation" << endl;
+            case scanner::_print:
+                cout << "print: " << s.get_lexeme() << endl;
                 break;
-            case scanner::operators:
-                cout << "Operator" << endl;
+            case scanner::lbra:
+                cout << "Left bracket: " << s.get_lexeme() << endl;
                 break;
-            case scanner::whitespace:
-                cout << "Whitespace" << endl;
+            case scanner::rbra:
+                cout << "Right bracket: " << s.get_lexeme() << endl;
                 break;
+            case scanner::lpar:
+                cout << "Left parenthesis: " << s.get_lexeme() << endl;
+                break;
+            case scanner::rpar:
+                cout << "Right parenthesis: " << s.get_lexeme() << endl;
+                break;
+            case scanner::_point:
+                cout << "Dot: " << s.get_lexeme() << endl;
+                break;
+            case scanner::_comma:
+                cout << "Comma: " << s.get_lexeme() << endl;
+                break;
+            case scanner::_pandcomma:
+                cout << "Point and comma: " << s.get_lexeme() << endl;
+                break;
+            case scanner::dots:
+                cout << "Dots: " << s.get_lexeme() << endl;
+                break;
+            case scanner::ampersand:
+                cout << "Ampersand: " << s.get_lexeme() << endl;
+                break;
+            case scanner::bar:
+                cout << "Bar: " << s.get_lexeme() << endl;
+                break;
+            case scanner::excla:
+                cout << "Exclamation: " << s.get_lexeme() << endl;
+                break;
+            case scanner::arrow:
+                cout << "Arrow: " << s.get_lexeme() << endl;
+                break;
+            // case scanner::_comment:
+            //     cout << "Comment: " << s.get_lexeme() << endl;
+            //     break;
             case scanner::_eof:
                 cout << "Fin del analisis, "<<s.get_line()<<" lineas analizadas" << endl; 
                 break;
@@ -54,8 +87,6 @@ int main(int argc, const char * argv[]) {
                 break;
         }
     } while (t != scanner::err && t != scanner::_eof);
-
-
 
 
     

@@ -1,0 +1,17 @@
+a: true;
+b: false;
+c: a and b;
+d: c or b;
+
+e: c -> (a = b);
+
+<< d ? b : not c;
+
+f: e != not m;
+
+<< f;
+
+result: f; 
+result': d;
+
+<< result or not result';

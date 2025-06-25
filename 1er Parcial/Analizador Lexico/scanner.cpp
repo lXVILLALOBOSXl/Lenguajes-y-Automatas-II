@@ -17,30 +17,30 @@ scanner::token scanner::id() {
         switch (actual) {
             case 0:
                 if (isalpha(c)) {
-                    actual = 1;
+                    actual = 2;
                     lexeme += c; 
                 } else if (c == '_') {
-                    actual = 2;
+                    actual = 1;
                     lexeme += c; 
                 } else {
                     actual = udef;
                 }
                 break;
             case 1:
-                if (isalnum(c) or c == '_') {
+                if (isdigit(c) or c == '_') {
                     actual = 1;
                     lexeme += c; 
-                }else {
+                }else if (isalpha(c)) {
+                    actual = 2;
+                    lexeme += c; 
+                } else {
                     actual = udef;
                 }
                 break;
             case 2:
-                if (isalpha(c)) {
-                    actual = 1;
-                    lexeme += c; 
-                } else if (isdigit(c) or c == '_') {
+                if (isalpha(c) or isdigit(c) or c == '_') {
                     actual = 2;
-                    lexeme += c; 
+                    lexeme += c;
                 } else {
                     actual = udef;
                 }
@@ -51,19 +51,25 @@ scanner::token scanner::id() {
     }
 
 
-    if (find(reserved_words.begin(), reserved_words.end(), lexeme) != reserved_words.end()) {
-        prior = 3;
+    if (lexeme == "true"){
+        fallback();
+        success();
+        return _true;
+    } else if (lexeme == "false"){
+        fallback();
+        success();
+        return _false;
+    } else if (lexeme == "print"){
+        fallback();
+        success();
+        return _print;
     }  
 
-    if (prior == 1) { // Identif
+    if (prior == 2) { // Identif
         fallback();
         success();
         return identif;
-    } else if (prior == 3) { // Reserved
-        fallback();
-        success();
-        return reserved;
-    }
+    } 
 
     failure();
     return err;
@@ -224,6 +230,8 @@ scanner::token scanner::delim() {
     int actual = 0;
     int prior = udef;
 
+    lexeme = "";
+
     while (actual != udef) {
 
         prior = actual;
@@ -232,13 +240,32 @@ scanner::token scanner::delim() {
         switch (actual) {
 
             case 0:
-                if (c == '(' or c == ')' or c == '[' or c == ']' or c == '{' or c == '}') {
+                if (c == '(') {
                     actual = 1;
+                    lexeme += c;
+                } else if (c == ')') {
+                    actual = 2;
+                    lexeme += c;
+                } else if (c == '[') {
+                    actual = 3;
+                    lexeme += c;
+                } else if (c == ']') {
+                    actual = 4;
+                    lexeme += c;
                 } else {
                     actual = udef;
                 }
                 break;
             case 1:
+                actual = udef;
+                break;
+            case 2:
+                actual = udef;
+                break;
+            case 3:
+                actual = udef;
+                break;
+            case 4:
                 actual = udef;
                 break;
 
@@ -248,7 +275,19 @@ scanner::token scanner::delim() {
     if (prior == 1) { // Delimiter
         fallback();
         success();
-        return delimiter;
+        return lpar;
+    }else if (prior == 2) { // Delimiter
+        fallback();
+        success();
+        return rpar;
+    }else if (prior == 3) { // Delimiter
+        fallback();
+        success();
+        return lbra;
+    }else if (prior == 4) { // Delimiter
+        fallback();
+        success();
+        return rbra;
     }
 
     failure();
@@ -260,6 +299,8 @@ scanner::token scanner::punct() {
     int actual = 0;
     int prior = udef;
 
+    lexeme = "";
+
     while (actual != udef) {
 
         prior = actual;
@@ -268,8 +309,15 @@ scanner::token scanner::punct() {
         switch (actual) {
 
             case 0:
-                if (c == '.' or c == ',' or c == ';') {
+                if (c == '.') {
                     actual = 1;
+                    lexeme += c;
+                } else if (c == ',') {
+                    actual = 2;
+                    lexeme += c;
+                } else if (c == ';') {
+                    actual = 3;
+                    lexeme += c;
                 } else {
                     actual = udef;
                 }
@@ -277,14 +325,30 @@ scanner::token scanner::punct() {
             case 1:
                 actual = udef;
                 break;
+            case 2:
+                actual = udef;
+                break;
+            case 3:
+                actual = udef;
+                break;
 
         }
+
+
     }
 
-    if (prior == 1) { // Punctuation
+    if (prior == 1) { 
         fallback();
         success();
-        return punctuation;
+        return _point;
+    }else if (prior == 2) { 
+        fallback();
+        success();
+        return _comma;
+    }else if (prior == 3) { 
+        fallback();
+        success();
+        return _pandcomma;
     }
 
     failure();
@@ -296,6 +360,8 @@ scanner::token scanner::op() {
     int actual = 0;
     int prior = udef;
 
+    lexeme = "";
+
     while (actual != udef) {
 
         prior = actual;
@@ -304,19 +370,108 @@ scanner::token scanner::op() {
         switch (actual) {
 
             case 0:
-                if (c == ':' or c == '&' or c == '|' or c == '!' ) {
-                    actual = 2;
-                } else if (c == '-'){
+                if (c == ':'){
                     actual = 1;
+                    lexeme += c;
+                } else if (c == '&'){
+                    actual = 2;
+                    lexeme += c;
+                } else if (c == '|'){
+                    actual = 3;
+                    lexeme += c;
+                } else if (c == '!'){
+                    actual = 4;
+                    lexeme += c;
+                } else if (c == '-'){
+                    actual = 5;
+                    lexeme += c;
+                }  else {
+                    actual = udef;
+                }
+                break;
+            case 1:
+                actual = udef;
+                break;
+            case 2:
+                actual = udef;
+                break;
+            case 3:
+                actual = udef;
+                break;
+            case 4:
+                actual = udef;
+                break;
+            case 5:
+                if (c == '>'){
+                    actual = 6;
+                    lexeme += c;
+                } else {
+                    actual = udef;
+                }
+                break;
+            case 6:
+                actual = udef;
+                break;
+
+        }
+
+
+    }
+
+    if (prior == 1) { 
+        fallback();
+        success();
+        return dots;
+    }else if (prior == 2) {
+        fallback();
+        success();
+        return ampersand;
+    }else if (prior == 3) {
+        fallback();
+        success();
+        return bar;
+    }else if (prior == 4) {
+        fallback();
+        success();
+        return excla;
+    }else if (prior == 6) {
+        fallback();
+        success();
+        return arrow;
+    }
+
+    failure();
+    return err;
+}
+
+scanner::token scanner::comment() {
+
+    int actual = 0;
+    int prior = udef;
+
+    lexeme = "";
+
+    while (actual != udef) {
+
+        prior = actual;
+        char c = read();
+
+        switch (actual) {
+
+            case 0:
+                if (c == '#'){
+                    actual = 1;
+                    lexeme += c;
                 } else {
                     actual = udef;
                 }
                 break;
             case 1:
-                if (c == '>') {
+                if (c == '\n'){
                     actual = 2;
                 } else {
-                    actual = udef;
+                    actual = 1;
+                    lexeme += c;
                 }
                 break;
             case 2:
@@ -324,12 +479,13 @@ scanner::token scanner::op() {
                 break;
 
         }
+
     }
 
-    if (prior == 2) { // Operator
+    if (prior == 2) { // Comment
         fallback();
         success();
-        return operators;
+        return _comment;
     }
 
     failure();
@@ -349,11 +505,13 @@ scanner::token scanner::ws() {
         switch (actual) {
 
             case 0:
-                if (c == '\t' or c == ' ' or c == '\n') {
+                if (c == '\t'){
                     actual = 1;
-                    if (c == '\n') {
-                        line++;
-                    }
+                } else if (c == '\n'){
+                    actual = 2;
+                    line++;
+                } else if (c == ' '){
+                    actual = 3;
                 } else {
                     actual = udef;
                 }
@@ -361,11 +519,25 @@ scanner::token scanner::ws() {
             case 1:
                 actual = udef;
                 break;
+            case 2:
+                actual = udef;
+                break;
+            case 3:
+                actual = udef;
+                break;
 
         }
     }
 
     if (prior == 1) { // Whitespace
+        fallback();
+        success();
+        return tab;
+    }else if (prior == 2) { // Whitespace
+        fallback();
+        success();
+        return _enter;
+    }else if (prior == 3) { // Whitespace
         fallback();
         success();
         return whitespace;
@@ -386,7 +558,9 @@ scanner::token scanner::next() {
     
     t = id();
     if (t == identif) return identif;
-    else if (t == reserved) return reserved;
+    else if (t == _true) return _true;
+    else if (t == _false) return _false;
+    else if (t == _print) return _print;
 
     t = num();
     if (t == integer) return integer;
@@ -395,16 +569,25 @@ scanner::token scanner::next() {
     else if (t == hex) return hex;
 
     t = delim();
-    if (t == delimiter) return delimiter;
+    if (t == lpar) return lpar;
+    else if (t == rpar) return rpar;
+    else if (t == lbra) return lbra;
+    else if (t == rbra) return rbra;
 
     t = punct();
-    if (t == punctuation) return punctuation;
+    if (t == _point) return _point;
+    else if (t == _comma) return _comma;
+    else if (t == _pandcomma) return _pandcomma;
 
     t = op();
-    if (t == operators) return operators;
+    if (t == dots) return dots;
+    else if (t == ampersand) return ampersand;
+    else if (t == bar) return bar;
+    else if (t == excla) return excla;
+    else if (t == arrow) return arrow;
 
-    // t = ws();
-    // if (t == whitespace) return whitespace;
+    t = comment();
+    if (t == _comment) return _comment;
 
     if (eof()) return _eof;
     

@@ -11,12 +11,9 @@ using namespace std;
 
 class scanner {
 
-public: typedef enum { integer, real, oct, hex, identif, reserved, delimiter, punctuation, operators, whitespace, _eof, err } token;
+public: typedef enum { integer, real, oct, hex, identif, _true, _false, _print, lbra, rbra, lpar, rpar, _point, _comma, _pandcomma, dots, ampersand, bar, excla, arrow, tab, _enter, whitespace, _comment, _eof, err } token;
 
 private:
-
-    // Reserved words are: print, true, false
-    set<string> reserved_words;
 
     static const int udef;
 
@@ -39,6 +36,7 @@ private:
     token punct();
     token op();
     token ws();
+    token comment();
     bool eof();
 
 public:
@@ -51,11 +49,11 @@ public:
         line = 1;
 
         q = 0;
-        reserved_words.insert("print");
-        reserved_words.insert("true");
-        reserved_words.insert("false");
         
     }
+    
+    // Destructor to close the file
+    ~scanner() { file.close(); }
 
     int get_line() { return line; }
     string get_lexeme() { return lexeme; }

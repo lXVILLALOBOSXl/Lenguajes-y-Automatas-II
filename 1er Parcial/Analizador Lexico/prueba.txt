@@ -1,2 +1,4 @@
-1.23 ( true -> ; 07 0x07
-hola
+hola 65.66 1.23 ( true print false
+ok; ->
+# Hola este es un comentario
+hey
